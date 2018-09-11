@@ -11,6 +11,10 @@ use std::thread;
 use std::time::Duration;
 use cycle::Cycle;
 
+lazy_static! {
+	static ref FRAME_PERIOD: Duration = Duration::new(0, 200 * 1000 * 1000);
+}
+
 pub struct Game {
 	render: Render,
 	physics: Physics,
@@ -18,7 +22,7 @@ pub struct Game {
 }
 
 fn physics_loop() {
-	for x in Cycle::new(Duration::new(0, 200000000)) {
+	for x in Cycle::new(*FRAME_PERIOD) {
 		x.prepare();
 		println!("tick");
 	}

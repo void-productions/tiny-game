@@ -1,6 +1,9 @@
 #![deny(bare_trait_objects)]
 #![feature(nll)]
 
+#[macro_use]
+extern crate lazy_static;
+
 mod game;
 mod cycle;
 
