@@ -2,6 +2,7 @@
 #![feature(nll)]
 
 mod game;
+mod cycle;
 
 use game::Game;
 
