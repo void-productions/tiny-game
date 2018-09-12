@@ -7,9 +7,7 @@ extern crate lazy_static;
 mod game;
 mod cycle;
 
-use game::Game;
-
 fn main() {
-	let game: Game = Game::new();
-	game.run();
+	let frame = unimplemented!();
+	game::run(frame);
 }

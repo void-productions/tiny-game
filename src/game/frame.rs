@@ -1,5 +1,6 @@
 use game::entity::Entity;
 
+#[derive(Clone)]
 pub struct Frame {
 	entities: Vec<Entity>,
 }

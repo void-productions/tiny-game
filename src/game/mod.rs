@@ -1,46 +1,55 @@
 mod render;
 mod physics;
 mod frame;
-mod frame_wrapper;
 mod entity;
 
-use self::render::Render;
-use self::physics::Physics;
-use self::frame_wrapper::FrameWrapper;
 use std::thread;
 use std::time::Duration;
+use std::sync::mpsc::{channel, Receiver, TryRecvError};
+
 use cycle::Cycle;
+use self::frame::Frame;
+use self::render::Render;
+use self::physics::Physics;
 
 lazy_static! {
 	static ref FRAME_PERIOD: Duration = Duration::new(0, 200 * 1000 * 1000);
 }
 
-pub struct Game {
-	render: Render,
-	physics: Physics,
-	frame_wrapper: FrameWrapper,
+fn render_loop(mut frame: Frame, mut render: Render, receiver: Receiver<Frame>) {
+	loop {
+		// read channel and update frame
+		loop {
+			match receiver.try_recv() {
+				Ok(f) => { frame = f; },
+				Err(TryRecvError::Empty) => break,
+				Err(TryRecvError::Disconnected) => return,
+			}
+		}
+
+		// render
+		render.render(&frame);
+	}
 }
 
-fn physics_loop() {
+pub fn run(mut frame: Frame) {
+	let mut physics = Physics::new();
+	let render = Render::new();
+
+	let (sender, receiver) = channel();
+
+	let tmp_frame = frame.clone();
+
+	let render_thread = thread::spawn(move || {
+		render_loop(tmp_frame, render, receiver);
+	});
+
 	for x in Cycle::new(*FRAME_PERIOD) {
 		x.prepare();
-		println!("tick");
-	}
-}
 
-impl Game {
-	pub fn new() -> Game {
-		Game {
-			render: Render,
-			physics: Physics,
-			frame_wrapper: FrameWrapper::new(),
-		}
-	}
+		frame = physics.tick(&frame);
 
-	pub fn run(&self) {
-		let physics_thread = thread::spawn(physics_loop);
-		loop {
-			thread::sleep(Duration::new(0, 50));
-		}
+		// send frame
+		sender.send(frame.clone());
 	}
 }
