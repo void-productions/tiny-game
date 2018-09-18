@@ -1,5 +1,5 @@
 use game::frame::Frame;
-use winit::{EventsLoop, Window, CreationError};
+use winit::{EventsLoop, Window, WindowBuilder, dpi::LogicalSize, CreationError};
 
 #[derive(Debug)]
 pub enum RenderCreateError {
@@ -14,8 +14,11 @@ pub struct Render {
 impl Render {
 	pub fn create() -> Result<Self, RenderCreateError> {
 		let events_loop = EventsLoop::new();
-		let window = Window::new(&events_loop)
-					.map_err(|e| RenderCreateError::CreationError(e))?;
+		let window = WindowBuilder::new()
+            .with_title("Tiny Game...")
+            .with_dimensions(LogicalSize::new(800., 600.))
+            .build(&events_loop)
+            .map_err(|e| RenderCreateError::CreationError(e))?;
 
 		let render = Render { events_loop, window };
 
