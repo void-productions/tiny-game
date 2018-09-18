@@ -1,7 +1,6 @@
 mod render;
 mod physics;
-mod frame;
-mod entity;
+pub mod frame;
 
 use std::thread;
 use std::time::Duration;

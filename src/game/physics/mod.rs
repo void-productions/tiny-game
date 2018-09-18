@@ -8,6 +8,6 @@ impl Physics {
 	}
 
 	pub fn tick(&mut self, frame: &Frame) -> Frame {
-		unimplemented!();
+		frame.clone()
 	}
 }

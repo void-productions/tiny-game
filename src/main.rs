@@ -3,11 +3,14 @@
 
 #[macro_use]
 extern crate lazy_static;
+extern crate simdnoise;
 
 mod game;
 mod cycle;
 
+use game::frame::Frame;
+
 fn main() {
-	let frame = unimplemented!();
+	let frame = Frame::new();
 	game::run(frame);
 }

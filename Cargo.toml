@@ -5,3 +5,4 @@ authors = ["memoryleak47 <memoryleak47@protonmail.ch>"]
 
 [dependencies]
 lazy_static = "1.0"
+simdnoise = "2.3"

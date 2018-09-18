@@ -8,6 +8,6 @@ impl Render {
 	}
 
 	pub fn render(&mut self, frame: &Frame) {
-		unimplemented!();
+		// TODO
 	}
 }
