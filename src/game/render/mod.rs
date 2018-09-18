@@ -8,16 +8,16 @@ pub enum RenderCreateError {
 
 pub struct Render {
 	events_loop: EventsLoop,
+	window: Window,
 }
 
 impl Render {
 	pub fn create() -> Result<Self, RenderCreateError> {
-		let render = Render {
-			events_loop: EventsLoop::new(),
-		};
+		let events_loop = EventsLoop::new();
+		let window = Window::new(&events_loop)
+					.map_err(|e| RenderCreateError::CreationError(e))?;
 
-		let _window = Window::new(&render.events_loop)
-			.map_err(|e| RenderCreateError::CreationError(e))?;
+		let render = Render { events_loop, window };
 
 		Ok(render)
 	}
