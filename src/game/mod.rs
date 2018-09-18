@@ -55,5 +55,8 @@ pub fn run(mut frame: Frame) {
 
 		// render
 		render.render(&frame);
+		if render.should_close() {
+			break;
+		}
 	}
 }

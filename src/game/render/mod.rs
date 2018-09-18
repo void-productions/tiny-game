@@ -1,5 +1,5 @@
 use game::frame::Frame;
-use winit::{EventsLoop, Window, WindowBuilder, dpi::LogicalSize, CreationError};
+use winit::{WindowEvent, Event, EventsLoop, Window, WindowBuilder, dpi::LogicalSize, CreationError};
 
 #[derive(Debug)]
 pub enum RenderCreateError {
@@ -9,6 +9,7 @@ pub enum RenderCreateError {
 pub struct Render {
 	events_loop: EventsLoop,
 	window: Window,
+	pub should_close: bool,
 }
 
 impl Render {
@@ -20,12 +21,23 @@ impl Render {
             .build(&events_loop)
             .map_err(|e| RenderCreateError::CreationError(e))?;
 
-		let render = Render { events_loop, window };
-
+		let render = Render { events_loop, window, should_close: false };
 		Ok(render)
 	}
 
 	pub fn render(&mut self, frame: &Frame) {
-		// TODO
+		let mut sc = false;
+		self.events_loop.poll_events(|ev| {
+			match ev {
+				Event::WindowEvent { event: WindowEvent::CloseRequested, .. } => sc = true,
+				_ => (),
+			}
+		});
+
+		if sc { self.should_close = true; }
+	}
+
+	pub fn should_close(&self) -> bool {
+		self.should_close
 	}
 }
