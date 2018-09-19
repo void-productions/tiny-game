@@ -10,7 +10,7 @@ pub enum RenderCreateError {
 pub struct Render {
 	events_loop: EventsLoop,
 	window: Window,
-	pub should_close: bool,
+	should_close: bool,
 }
 
 impl Render {
