@@ -23,7 +23,11 @@ fn physics_loop(mut frame: Frame, mut physics: Physics, frame_sender: Sender<Fra
 		loop {
 			match key_event_receiver.try_recv() {
 				Ok(window_event) => {
-                    // TODO handle window events
+                    /* TODO handle window events
+                       - map window events to action events
+                       - update action state with action events
+                       - forward action events to player and co.
+                       */
                 },
 				Err(TryRecvError::Empty) => break,
 				Err(TryRecvError::Disconnected) => return,
