@@ -1,5 +1,6 @@
 use game::frame::Frame;
 use winit::{WindowEvent, Event, EventsLoop, Window, WindowBuilder, dpi::LogicalSize, CreationError};
+use std::sync::mpsc::Sender;
 
 #[derive(Debug)]
 pub enum RenderCreateError {
@@ -25,16 +26,24 @@ impl Render {
 		Ok(render)
 	}
 
-	pub fn render(&mut self, frame: &Frame) {
+    pub fn handle_events(&mut self, window_event_sender: &Sender<WindowEvent>) {
 		let mut sc = false;
 		self.events_loop.poll_events(|ev| {
 			match ev {
 				Event::WindowEvent { event: WindowEvent::CloseRequested, .. } => sc = true,
 				_ => (),
 			}
+
+            if let Event::WindowEvent{event: window_event, ..} = ev {
+                window_event_sender.send(window_event).expect("window event receiver is closed!");
+            }
 		});
 
 		if sc { self.should_close = true; }
+    }
+
+	pub fn render(&mut self, frame: &Frame) {
+        // TODO
 	}
 
 	pub fn should_close(&self) -> bool {
