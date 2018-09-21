@@ -5,14 +5,12 @@ pub mod frame;
 use std::thread;
 use std::time::Duration;
 use std::sync::mpsc::{channel, Sender, Receiver, TryRecvError};
-use winit::WindowEvent;
 
 use cycle::Cycle;
 use self::frame::Frame;
 use self::render::Render;
 use self::physics::Physics;
 use mapper;
-use vec::Vec2f;
 use input;
 
 lazy_static! {

@@ -8,8 +8,6 @@ pub struct Vec2t<T>
 }
 
 pub type Vec2f = Vec2t<f32>;
-pub type Vec2u = Vec2t<u32>;
-pub type Vec2i = Vec2t<i32>;
 
 impl<T> Vec2t<T>
 		where T: Add<Output=T> + Sub<Output=T> + Mul<Output=T> + Div<Output=T> + Copy {

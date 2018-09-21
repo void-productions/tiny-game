@@ -51,7 +51,9 @@ impl Render {
     }
 
 	pub fn render(&mut self, frame: &Frame) {
-		// TODO
+        // TODO
+		let y = frame.get_height(frame.player.position);
+		println!("player [x, y, z]: [{} {} {}]", frame.player.position.x, y, frame.player.position.y);
 	}
 
 	pub fn should_close(&self) -> bool {
@@ -69,7 +71,7 @@ impl Render {
 }
 
 fn set_mouse_position(window: &mut Window, position: Vec2f) {
-	window.set_cursor_position(position.into());
+	window.set_cursor_position(position.into()).unwrap();
 }
 
 fn center_mouse(window: &mut Window) {
