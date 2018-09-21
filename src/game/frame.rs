@@ -1,8 +1,8 @@
 use action::Action;
 use vec::Vec2f;
 
-#[derive(Clone)]
-struct Player {
+#[derive(Clone, Debug)]
+pub struct Player {
 	position: Vec2f,
 	jaw: f32,
 	pitch: f32,
@@ -15,7 +15,7 @@ struct Player {
 
 #[derive(Clone)]
 pub struct Frame {
-	player: Player,
+	pub player: Player,
 }
 
 impl Player {
