@@ -8,6 +8,7 @@ extern crate winit;
 
 mod vec;
 mod action;
+mod mapper;
 mod game;
 mod cycle;
 
