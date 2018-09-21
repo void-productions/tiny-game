@@ -24,10 +24,11 @@ impl Event {
 		match window_event {
 			WindowEvent::KeyboardInput { input: KeyboardInput { virtual_keycode: Some(key), state, .. }, .. } => Some(Event::Key { toggle: f(*state), key: *key }),
 			WindowEvent::CursorMoved { position, .. } => {
-				let position = Vec2f::new(position.x as f32, position.y as f32);
+				let position: Vec2f = (*position).into();
 				let delta_position = position - mouse_position;
 
 				Some(Event::CursorMove(delta_position))
+					.filter(|_| delta_position.x != 0. || delta_position.y != 0.)
 			},
 			_ => None,
 		}
