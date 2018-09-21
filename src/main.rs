@@ -6,6 +6,8 @@ extern crate lazy_static;
 extern crate simdnoise;
 extern crate winit;
 
+mod vec;
+mod action;
 mod game;
 mod cycle;
 
