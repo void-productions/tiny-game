@@ -11,23 +11,26 @@ use cycle::Cycle;
 use self::frame::Frame;
 use self::render::Render;
 use self::physics::Physics;
+use mapper::Mapper;
+use vec::Vec2f;
 
 lazy_static! {
 	static ref FRAME_PERIOD: Duration = Duration::new(0, 200 * 1000 * 1000);
 }
 
 fn physics_loop(mut frame: Frame, mut physics: Physics, frame_sender: Sender<Frame>, key_event_receiver: Receiver<WindowEvent>) {
+    let mapper = Mapper::new(Vec2f::new(0., 0.));
+
 	for x in Cycle::new(*FRAME_PERIOD) {
+        // wait for the next tick time
 		x.prepare();
 
 		loop {
 			match key_event_receiver.try_recv() {
 				Ok(window_event) => {
-                    /* TODO handle window events
-                       - map window events to action events
-                       - update action state with action events
-                       - forward action events to player and co.
-                       */
+                    if let Some(action_event) = mapper.convert(window_event, false) {
+                        frame.apply_action(action_event);
+                    }
                 },
 				Err(TryRecvError::Empty) => break,
 				Err(TryRecvError::Disconnected) => return,
