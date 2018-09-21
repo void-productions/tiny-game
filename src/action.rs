@@ -1,4 +1,4 @@
-use vec::Vec2u;
+use vec::Vec2f;
 
 pub enum Toggle {
 	Start, Stop
@@ -9,6 +9,6 @@ pub enum Event {
 	WalkLeft(Toggle),
 	WalkRight(Toggle),
 	WalkBack(Toggle),
-	CursorMove(Vec2u), // not triggered in the normal game, only in menu
-	CamRotate(Vec2u),
+	CursorMove(Vec2f), // not triggered in the normal game, only in menu
+	CamRotate(Vec2f),
 }
