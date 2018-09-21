@@ -43,6 +43,8 @@ impl Render {
     }
 
 	pub fn render(&mut self, frame: &Frame) {
+		let y = frame.get_height(frame.player.position);
+		println!("player [x, y, z]: [{} {} {}]", frame.player.position.x, y, frame.player.position.y);
         // TODO
 	}
 
