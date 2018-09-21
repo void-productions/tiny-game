@@ -32,7 +32,7 @@ impl Mapper {
 			WindowEvent::KeyboardInput { virtual_keycode: Some(WALK_RIGHT_KEY), state } => Some(action::Event::WalkRight(f(state))),
 			WindowEvent::CursorMoved { position } => {
 				let position = Vec2f::new(position.x as f32, position.y as f32);
-				let delta_position = self.mouse_position - position;
+				let delta_position = position - self.mouse_position;
 
 				if menu {
 					Some(action::Event::CursorMoved(delta_position))
