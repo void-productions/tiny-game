@@ -1,6 +1,13 @@
 use std::ops::{Add, Sub, Mul, Div};
 
 #[derive(Clone, Copy, Debug)]
+pub struct Vec3f {
+	pub x: f32,
+	pub y: f32,
+	pub z: f32,
+}
+
+#[derive(Clone, Copy, Debug)]
 pub struct Vec2t<T>
 		where T: Add<Output=T> + Sub<Output=T> + Mul<Output=T> + Div<Output=T> + Copy {
 	pub x: T,

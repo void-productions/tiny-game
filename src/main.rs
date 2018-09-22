@@ -13,6 +13,7 @@ mod toggle;
 mod input;
 mod cycle;
 mod render;
+mod polygon;
 mod window_handler;
 mod core;
 mod physics;
