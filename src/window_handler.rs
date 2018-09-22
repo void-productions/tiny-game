@@ -1,36 +1,38 @@
-use game::frame::Frame;
 use winit::{WindowEvent, Event, EventsLoop, Window, WindowBuilder, dpi::LogicalSize, dpi::LogicalPosition, CreationError};
 use std::sync::mpsc::Sender;
 
+use frame::Frame;
 use input;
+use render::Render;
 use vec::Vec2f;
 
 #[derive(Debug)]
-pub enum RenderCreateError {
+pub enum WindowHandlerCreateError {
 	CreationError(CreationError),
 }
 
-pub struct Render {
+pub struct WindowHandler {
 	events_loop: EventsLoop,
 	window: Window,
 	should_close: bool,
     mouse_position: Vec2f,
+	render: Render,
 }
 
-impl Render {
-	pub fn create() -> Result<Self, RenderCreateError> {
+impl WindowHandler {
+	pub fn create() -> Result<Self, WindowHandlerCreateError> {
 		let events_loop = EventsLoop::new();
 		let mut window = WindowBuilder::new()
             .with_title("Tiny Game...")
             .with_dimensions(LogicalSize::new(800., 600.))
             .build(&events_loop)
-            .map_err(|e| RenderCreateError::CreationError(e))?;
+            .map_err(|e| WindowHandlerCreateError::CreationError(e))?;
 
 		let c = get_center(&window);
 		set_mouse_position(&mut window, c);
-		let render = Render { events_loop, window, should_close: false, mouse_position: c };
+		let window_handler = WindowHandler { events_loop, window, should_close: false, mouse_position: c, render: Render::new() };
 
-		Ok(render)
+		Ok(window_handler)
 	}
 
     pub fn handle_events(&mut self, input_event_sender: &Sender<input::Event>) {
@@ -54,6 +56,7 @@ impl Render {
         // TODO
 		let y = frame.get_height(frame.player.position);
 		println!("player [x, y, z]: [{} {} {}]", frame.player.position.x, y, frame.player.position.y);
+		self.render.render(frame);
 	}
 
 	pub fn should_close(&self) -> bool {

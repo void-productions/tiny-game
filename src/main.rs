@@ -11,12 +11,16 @@ mod action;
 mod mapper;
 mod toggle;
 mod input;
-mod game;
 mod cycle;
+mod render;
+mod window_handler;
+mod core;
+mod physics;
+mod frame;
 
-use game::frame::Frame;
+use frame::Frame;
 
 fn main() {
 	let frame = Frame::new();
-	game::run(frame);
+	core::run(frame);
 }

@@ -1,4 +1,4 @@
-use game::frame::Frame;
+use frame::Frame;
 
 use vec::Vec2f;
 

@@ -1,15 +1,11 @@
-mod render;
-mod physics;
-pub mod frame;
-
 use std::thread;
 use std::time::Duration;
 use std::sync::mpsc::{channel, Sender, Receiver, TryRecvError};
 
 use cycle::Cycle;
-use self::frame::Frame;
-use self::render::Render;
-use self::physics::Physics;
+use frame::Frame;
+use window_handler::WindowHandler;
+use physics::Physics;
 use mapper;
 use input;
 
@@ -46,7 +42,7 @@ fn physics_loop(mut frame: Frame, mut physics: Physics, frame_sender: Sender<Fra
 pub fn run(mut frame: Frame) {
 	let physics = Physics::new();
 
-	let mut render = match Render::create() {
+	let mut window_handler = match WindowHandler::create() {
 		Ok(r) => r,
 		Err(e) => panic!("{:?}", e),
 	};
@@ -69,11 +65,10 @@ pub fn run(mut frame: Frame) {
 			}
 		}
 
-        render.handle_events(&input_event_sender);
+        window_handler.handle_events(&input_event_sender);
 
-		// render
-		render.render(&frame);
-		if render.should_close() {
+		window_handler.render(&frame);
+		if window_handler.should_close() {
 			break;
 		}
 	}
