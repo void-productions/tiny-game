@@ -70,6 +70,7 @@ impl ChunkWeb {
 
 		let mut v: Vec<Vec3f> = Vec::new();
 
+		// TODO, this does not work, if VISION > BASE_CHUNK_SIZE
 		for &x in [-BASE_CHUNK_SIZE, 0., BASE_CHUNK_SIZE].into_iter() {
 			for &y in [-BASE_CHUNK_SIZE, 0., BASE_CHUNK_SIZE].into_iter() {
 				for &z in [-BASE_CHUNK_SIZE, 0., BASE_CHUNK_SIZE].into_iter() {
@@ -87,6 +88,7 @@ impl ChunkWeb {
 
 impl Chunk {
 	fn build(frame: &Frame, from: Vec3f, chunk_size: f32) -> Chunk {
+		// TODO
 		unimplemented!()
 	}
 }
