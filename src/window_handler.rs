@@ -54,8 +54,10 @@ impl WindowHandler {
 
 	pub fn render(&mut self, frame: &Frame) {
         // TODO
-		let y = frame.get_height(frame.player.position);
-		println!("player [x, y, z]: [{} {} {}]", frame.player.position.x, y, frame.player.position.y);
+		let x = frame.player.position_x;
+		let z = frame.player.position_z;
+		let y = frame.get_height(x, z);
+		println!("player [x, y, z]: [{} {} {}]", x, y, z);
 		self.render.render(frame);
 	}
 

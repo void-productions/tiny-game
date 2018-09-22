@@ -1,11 +1,11 @@
 use simdnoise::{get_2d_noise, NoiseType};
 
 use action::Action;
-use vec::Vec2f;
 
 #[derive(Clone)]
 pub struct Player {
-	pub position: Vec2f,
+	pub position_x: f32,
+	pub position_z: f32,
 	pub jaw: f32,
 	pub pitch: f32,
 
@@ -23,7 +23,8 @@ pub struct Frame {
 impl Player {
 	fn new() -> Player {
 		Player {
-			position: Vec2f::new(0., 0.),
+			position_x: 0.,
+			position_z: 0.,
 			jaw: 0.,
 			pitch: 0.,
 
@@ -60,8 +61,8 @@ impl Frame {
         self.player.apply_action(action);
     }
 
-	pub fn get_height(&self, p: Vec2f) -> f32 {
+	pub fn get_height(&self, x: f32, z: f32) -> f32 {
 		let ntype = NoiseType::Normal { freq: 0.01 };
-		get_2d_noise(p.x, 1, p.y, 1, ntype).0[0] * 1000.
+		get_2d_noise(x, 1, z, 1, ntype).0[0] * 1000.
 	}
 }
