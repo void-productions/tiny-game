@@ -1,5 +1,7 @@
+use std::collections::HashMap;
+
 use frame::Frame;
-use vec::Vec3f;
+use vec::{Vec3u, Vec3f};
 
 const BASE_CHUNK_SIZE: f32 = 100.;
 const MINIMAL_CHUNK_SIZE: f32 =  10.;
@@ -13,7 +15,7 @@ pub struct PolygonFrame {
 }
 
 pub struct ChunkWeb {
-	chunks: Vec<(Vec3f, Chunk)>, // TODO use better representation
+	chunks: HashMap<Vec3u, Chunk>,
 }
 
 pub enum Chunk {
@@ -58,9 +60,9 @@ impl PolygonFrame {
 
 impl ChunkWeb {
 	fn build(frame: &Frame, camera: Vec3f) -> ChunkWeb {
-		let mut chunks = Vec::new();
+		let mut chunks = HashMap::new();
 		for x in ChunkWeb::get_relevant_sources(camera).into_iter() {
-			chunks.push((x, Chunk::build(frame, x, BASE_CHUNK_SIZE, camera)));
+			chunks.insert(x, Chunk::build(frame, x.map(|u| (u as f32) * BASE_CHUNK_SIZE), BASE_CHUNK_SIZE, camera));
 		}
 		ChunkWeb { chunks }
 		
@@ -75,22 +77,16 @@ impl ChunkWeb {
 		// - apply these changes
 	}
 
-	fn get_relevant_sources(camera: Vec3f) -> Vec<Vec3f> {
-		let round = |p: Vec3f| {
-			Vec3f::new (
-				p.x % BASE_CHUNK_SIZE,
-				p.y % BASE_CHUNK_SIZE,
-				p.z % BASE_CHUNK_SIZE
-			)
-		};
+	fn get_relevant_sources(camera: Vec3f) -> Vec<Vec3u> {
+		let mut v: Vec<Vec3u> = Vec::new();
 
-		let mut v: Vec<Vec3f> = Vec::new();
+		let min = find_source(camera - BASE_CHUNK_SIZE);
+		let max = find_source(camera + BASE_CHUNK_SIZE);
 
-		// TODO, this does not work, if VISION > BASE_CHUNK_SIZE
-		for &x in [-BASE_CHUNK_SIZE, 0., BASE_CHUNK_SIZE].into_iter() {
-			for &y in [-BASE_CHUNK_SIZE, 0., BASE_CHUNK_SIZE].into_iter() {
-				for &z in [-BASE_CHUNK_SIZE, 0., BASE_CHUNK_SIZE].into_iter() {
-					let moved_pos: Vec3f = round(camera + Vec3f::new(x, y, z));
+		for x in min.x..=max.x {
+			for y in min.y..=max.y {
+				for z in min.z..=max.z {
+					let moved_pos = Vec3u::new(x, y, z);
 					if !v.contains(&moved_pos) {
 						v.push(moved_pos);
 					}
@@ -109,3 +105,10 @@ impl Chunk {
 	}
 }
 
+fn find_source(p: Vec3f) -> Vec3u {
+	Vec3u::new (
+		(p.x / BASE_CHUNK_SIZE) as u32,
+		(p.y / BASE_CHUNK_SIZE) as u32,
+		(p.z / BASE_CHUNK_SIZE) as u32,
+	)
+}
