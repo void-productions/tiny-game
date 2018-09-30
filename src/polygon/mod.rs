@@ -6,8 +6,12 @@ use vec::Vec3f;
 
 use self::web::ChunkWeb;
 
-const BASE_CHUNK_SIZE: f32 = 100.;
-const MINIMAL_CHUNK_SIZE: f32 =  10.;
+// A Chunk is a cube, it's width = height = length is called size
+// There is an infinite imaginary grid in the polygon world, the length of a grid cell is defined to be 1
+// The minimal chunk has the size of one grid cell, therefore it's size is 1
+// The source of a chunk is the Vec3i with the lowest coordinates, which is still within the chunk
+
+const BASE_CHUNK_SIZE: u32 = 32;
 const VISION_RANGE: f32 = 100.;
 
 pub struct PolygonFrame {
@@ -16,7 +20,6 @@ pub struct PolygonFrame {
 	pitch: f32,
 	chunk_web: ChunkWeb,
 }
-
 
 impl PolygonFrame {
 	pub fn build(frame: &Frame) -> PolygonFrame {
@@ -36,8 +39,8 @@ impl PolygonFrame {
 		self.chunk_web.update(frame, camera_position, self.camera_position);
 
 		self.camera_position = camera_position;
-		self.jaw =  frame.player.jaw;
-		self.pitch =  frame.player.pitch;
+		self.jaw = frame.player.jaw;
+		self.pitch = frame.player.pitch;
 	}
 
 	fn get_camera(frame: &Frame) -> Vec3f {

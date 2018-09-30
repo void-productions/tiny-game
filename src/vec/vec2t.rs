@@ -7,8 +7,13 @@ pub struct Vec2t<T> {
 	pub y: T,
 }
 
+#[allow(dead_code)]
 pub type Vec2f = Vec2t<f32>;
+#[allow(dead_code)]
 pub type Vec2u = Vec2t<u32>;
+#[allow(dead_code)]
+pub type Vec2i = Vec2t<u32>;
+
 
 impl<T> Vec2t<T> {
 	pub fn new(x: T, y: T) -> Vec2t<T> {

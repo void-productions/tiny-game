@@ -8,8 +8,12 @@ pub struct Vec3t<T> {
 	pub z: T,
 }
 
+#[allow(dead_code)]
 pub type Vec3f = Vec3t<f32>;
+#[allow(dead_code)]
 pub type Vec3u = Vec3t<u32>;
+#[allow(dead_code)]
+pub type Vec3i = Vec3t<u32>;
 
 impl<T> Vec3t<T> {
 	pub fn new(x: T, y: T, z: T) -> Vec3t<T> {
