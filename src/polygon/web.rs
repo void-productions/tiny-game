@@ -25,7 +25,7 @@ impl ChunkWeb {
 		let new_base_chunk_sources = ChunkWeb::get_base_chunk_sources(new_camera);
 		// TODO create new base chunks
 		// TODO remove obsolete base chunks
-		
+
 		// TODO:
 		// - detect newly combined Chunks
 		// - detect newly splat Chunks
