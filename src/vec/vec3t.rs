@@ -13,11 +13,21 @@ pub type Vec3f = Vec3t<f32>;
 #[allow(dead_code)]
 pub type Vec3u = Vec3t<u32>;
 #[allow(dead_code)]
-pub type Vec3i = Vec3t<u32>;
+pub type Vec3i = Vec3t<i32>;
 
 impl<T> Vec3t<T> {
 	pub fn new(x: T, y: T, z: T) -> Vec3t<T> {
 		Vec3t { x, y, z }
+	}
+}
+
+impl<T: Copy> Vec3t<T> {
+	pub fn with(a: T) -> Vec3t<T> {
+		Vec3t {
+			x: a,
+			y: a,
+			z: a,
+		}
 	}
 }
 

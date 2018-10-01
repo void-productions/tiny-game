@@ -12,12 +12,21 @@ pub type Vec2f = Vec2t<f32>;
 #[allow(dead_code)]
 pub type Vec2u = Vec2t<u32>;
 #[allow(dead_code)]
-pub type Vec2i = Vec2t<u32>;
+pub type Vec2i = Vec2t<i32>;
 
 
 impl<T> Vec2t<T> {
 	pub fn new(x: T, y: T) -> Vec2t<T> {
 		Vec2t { x, y }
+	}
+}
+
+impl<T: Copy> Vec2t<T> {
+	pub fn with(a: T) -> Vec2t<T> {
+		Vec2t {
+			x: a,
+			y: a,
+		}
 	}
 }
 
