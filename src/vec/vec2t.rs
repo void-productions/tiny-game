@@ -167,3 +167,9 @@ impl<T: Debug> Debug for Vec2t<T> {
 		fmt.write_str(&*s)
 	}
 }
+
+impl Vec2f {
+	pub fn magnitude(self) -> f32 {
+		(self.x + self.y).sqrt()
+	}
+}

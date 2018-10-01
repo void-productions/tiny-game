@@ -179,3 +179,9 @@ impl<T: Debug> Debug for Vec3t<T> {
 		fmt.write_str(&*s)
 	}
 }
+
+impl Vec3f {
+	pub fn magnitude(self) -> f32 {
+		(self.x + self.y + self.z).sqrt()
+	}
+}
