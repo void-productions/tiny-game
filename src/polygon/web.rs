@@ -23,13 +23,29 @@ impl ChunkWeb {
 	pub fn update(&mut self, frame: &Frame, new_camera: Vec3f, old_camera: Vec3f) {
 		let old_base_chunk_sources = ChunkWeb::get_environment_base_chunk_sources(old_camera);
 		let new_base_chunk_sources = ChunkWeb::get_environment_base_chunk_sources(new_camera);
-		// TODO create new base chunks
-		// TODO remove obsolete base chunks
+		for src in old_base_chunk_sources.iter() {
+			if !new_base_chunk_sources.contains(src) {
+				self.remove(*src);
+			}
+		}
+		for src in new_base_chunk_sources.iter() {
+			if !old_base_chunk_sources.contains(src) {
+				self.add(*src, new_camera, frame);
+			}
+		}
 
 		// TODO:
 		// - detect newly combined Chunks
 		// - detect newly splat Chunks
 		// - apply these changes
+	}
+
+	fn add(&mut self, source: Vec3i, camera: Vec3f, frame: &Frame) {
+		self.chunks.insert(source, Chunk::build(frame, source, BASE_CHUNK_SIZE, camera));
+	}
+
+	fn remove(&mut self, source: Vec3i) {
+		self.chunks.remove(&source).unwrap();
 	}
 
 	fn round(v: Vec3f) -> Vec3i {
