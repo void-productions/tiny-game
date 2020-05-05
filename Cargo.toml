@@ -1,9 +1,6 @@
 [package]
 name = "tiny-game"
 version = "0.1.0"
-authors = ["memoryleak47 <memoryleak47@protonmail.ch>"]
+authors = ["memoryleak47 <memoryleak47@protonmail.ch>", "Bluemi <bruno.schilling@protonmail.ch"]
 
 [dependencies]
-lazy_static = "1.0"
-simdnoise = "2.3"
-winit = "0.17"
