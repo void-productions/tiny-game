@@ -26,40 +26,8 @@ fn create_app_info() -> vk::ApplicationInfo {
     }
 }
 
-fn create_utils_messenger(entry: &ash::Entry, instance: &ash::Instance) -> ash::prelude::VkResult<vk::DebugUtilsMessengerEXT> {
-    let debug_utils = ash::extensions::ext::DebugUtils::new(entry, instance);
-    let debugcreateinfo = vk::DebugUtilsMessengerCreateInfoEXT {
-        message_severity: vk::DebugUtilsMessageSeverityFlagsEXT::WARNING
-            | vk::DebugUtilsMessageSeverityFlagsEXT::VERBOSE
-            | vk::DebugUtilsMessageSeverityFlagsEXT::INFO
-            | vk::DebugUtilsMessageSeverityFlagsEXT::ERROR,
-        message_type: vk::DebugUtilsMessageTypeFlagsEXT::GENERAL
-            | vk::DebugUtilsMessageTypeFlagsEXT::PERFORMANCE
-            | vk::DebugUtilsMessageTypeFlagsEXT::VALIDATION,
-        pfn_user_callback: Some(vulkan_debug_utils_callback),
-        ..Default::default()
-    };
-
-    unsafe { debug_utils.create_debug_utils_messenger(&debugcreateinfo, None) }
-}
-
-fn create_instance_create_info() -> vk::InstanceCreateInfo {
-    let layer_names: Vec<std::ffi::CString> = vec![std::ffi::CString::new("VK_LAYER_KHRONOS_validation").unwrap()];
-    let layer_name_pointers: Vec<*const i8> = layer_names.iter().map(|layer_name| layer_name.as_ptr()).collect();
-    let extension_name_pointers: Vec<*const i8> = vec![ash::extensions::ext::DebugUtils::name().as_ptr()];
-    vk::InstanceCreateInfo {
-        p_application_info: &create_app_info(),
-        pp_enabled_layer_names: layer_name_pointers.as_ptr(),
-        enabled_layer_count: layer_name_pointers.len() as u32,
-        pp_enabled_extension_names: extension_name_pointers.as_ptr(),
-        enabled_extension_count: extension_name_pointers.len() as u32,
-        ..Default::default()
-    }
-}
-
 fn main() -> Result<(), Box<dyn std::error::Error>> {
     let entry = ash::Entry::new().unwrap();
-    // let instance_create_info = create_instance_create_info();
     
     let layer_names: Vec<std::ffi::CString> = vec![std::ffi::CString::new("VK_LAYER_KHRONOS_validation").unwrap()];
     let layer_name_pointers: Vec<*const i8> = layer_names.iter().map(|layer_name| layer_name.as_ptr()).collect();
@@ -75,7 +43,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     dbg!(&instance_create_info);
     let instance = unsafe { entry.create_instance(&instance_create_info, None).unwrap() };
-    unsafe { instance.destroy_instance(None) };
 
 
     let debug_utils = ash::extensions::ext::DebugUtils::new(&entry, &instance);
@@ -92,7 +59,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
     };
 
     let utils_messenger = unsafe { debug_utils.create_debug_utils_messenger(&debugcreateinfo, None).unwrap() };
+
     unsafe { debug_utils.destroy_debug_utils_messenger(utils_messenger, None) };
+    unsafe { instance.destroy_instance(None) };
 
     Ok(())
 }
