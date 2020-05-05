@@ -41,7 +41,6 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
         ..Default::default()
     };
 
-    dbg!(&instance_create_info);
     let instance = unsafe { entry.create_instance(&instance_create_info, None).unwrap() };
 
 
