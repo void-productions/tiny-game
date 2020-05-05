@@ -19,11 +19,11 @@ unsafe extern "system" fn vulkan_debug_utils_callback(
 
 fn create_app_info() -> vk::ApplicationInfo {
     let appname = std::ffi::CString::new("The Black Window").unwrap();
-    vk::ApplicationInfo {
-        p_application_name: appname.as_ptr(),
-        application_version: vk::make_version(0, 1, 0),
-        ..Default::default()
-    }
+
+    vk::ApplicationInfo::builder()
+        .application_name(&appname)
+        .application_version(vk::make_version(0, 1, 0))
+        .build()
 }
 
 fn main() -> Result<(), Box<dyn std::error::Error>> {
