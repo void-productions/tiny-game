@@ -5,3 +5,4 @@ authors = ["memoryleak47 <memoryleak47@protonmail.ch>", "Bluemi <bruno.schilling
 edition = "2018"
 
 [dependencies]
+ash="0.30.0"
