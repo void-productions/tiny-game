@@ -59,6 +59,14 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
 
     let utils_messenger = unsafe { debug_utils.create_debug_utils_messenger(&debugcreateinfo, None).unwrap() };
 
+    // choose device
+    let phys_devs = unsafe { instance.enumerate_physical_devices()? };
+    if let Some(physical_device) = phys_devs.first() {
+        // queues
+        let queuefamilyproperties = unsafe { instance.get_physical_device_queue_family_properties(*physical_device) };
+        dbg!(&queuefamilyproperties);
+    }
+
     unsafe { debug_utils.destroy_debug_utils_messenger(utils_messenger, None) };
     unsafe { instance.destroy_instance(None) };
 
